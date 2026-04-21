@@ -1,0 +1,105 @@
+# R：09矩阵
+
+## 一、矩阵基础
+
+矩阵是 **M 行 × N 列** 的矩形数据结构，是 R 中最常用的数据结构之一。
+
+### 1. 创建矩阵：`matrix()`
+
+```r
+matrix(data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL)
+```
+
+**参数说明**
+
+- `data`：矩阵元素（向量）
+- `nrow`：行数
+- `ncol`：列数
+- `byrow`：`TRUE`=按行填充，`FALSE`=按列填充（默认）
+- `dimnames`：设置行名、列名
+
+### 2. 矩阵创建示例
+
+```r
+# 1. 按行填充 4行3列
+m <- matrix(c(3:14), nrow = 4, byrow = TRUE)
+
+# 2. 按列填充（默认）
+n <- matrix(c(3:14), nrow = 4, byrow = FALSE)
+
+# 3. 带行名、列名
+rownames <- c("row1", "row2", "row3", "row4")
+colnames <- c("col1", "col2", "col3")
+p <- matrix(c(3:14), nrow = 4, byrow = TRUE, dimnames = list(rownames, colnames))
+
+print(m)
+print(n)
+print(p)
+```
+
+## 二、矩阵转置
+
+使用 `t()` 函数将**行和列互换**。
+
+```r
+m <- matrix(c(2, 6, 5, 1, 10, 4), nrow = 2, byrow = TRUE)
+print(m)    # 原矩阵
+print(t(m)) # 转置矩阵
+```
+
+## 三、访问矩阵元素
+
+语法：`矩阵[行, 列]`
+
+```r
+# 创建带名称的矩阵
+rownames <- c("row1","row2","row3","row4")
+colnames <- c("col1","col2","col3")
+p <- matrix(c(3:14), nrow=4, byrow=TRUE, dimnames=list(rownames,colnames))
+
+# 单个元素
+p[1, 3]   # 第1行第3列
+p[4, 2]   # 第4行第2列
+
+# 整行 / 整列
+p[2, ]    # 第2行所有元素
+p[, 3]    # 第3列所有元素
+```
+
+## 四、矩阵运算
+
+### 1. 矩阵加减法
+
+**必须同维度**（行数、列数完全相同），对应位置直接计算。
+
+```r
+matrix1 <- matrix(c(7,9,-1,4,2,3), nrow=2)
+matrix2 <- matrix(c(6,1,0,9,3,2), nrow=2)
+
+matrix1 + matrix2  # 相加
+matrix1 - matrix2  # 相减
+```
+
+### 2. 矩阵乘除法
+
+| 运算 | 符号 | 说明 |
+|------|------|------|
+| 按元素相乘 | `*` | 对应位置相乘 |
+| 按元素相除 | `/` | 对应位置相除 |
+| 矩阵乘法 | `%*%` | 线性代数标准乘法 |
+| 矩阵除法 | `%*% solve()` | A ÷ B = A × B⁻¹ |
+
+```r
+# 按元素运算
+matrix1 * matrix2
+matrix1 / matrix2
+
+# 矩阵乘法（第一个矩阵的列 = 第二个矩阵的行）
+m3 <- matrix(1:6, nrow=2, byrow=T)
+m4 <- matrix(1:6, nrow=3, byrow=T)
+m3 %*% m4
+
+# 矩阵除法（求逆后相乘）
+m5 <- matrix(1:4, nrow=2)
+m4 %*% solve(m5)
+```
